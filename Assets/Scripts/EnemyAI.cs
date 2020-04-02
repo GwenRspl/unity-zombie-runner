@@ -12,40 +12,42 @@ public class EnemyAI : MonoBehaviour {
     float distanceToTarget = Mathf.Infinity;
     bool isProvoked = false;
 
-    void Start () {
-        navMeshAgent = GetComponent<NavMeshAgent> ();
+    void Start() {
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    void Update () {
-        distanceToTarget = Vector3.Distance (target.position, transform.position);
+    void Update() {
+        distanceToTarget = Vector3.Distance(target.position, transform.position);
 
         if (isProvoked) {
-            EngageTarget ();
+            EngageTarget();
         } else if (distanceToTarget <= chaseRange) {
             isProvoked = true;
         }
     }
 
-    private void EngageTarget () {
+    private void EngageTarget() {
         if (distanceToTarget > navMeshAgent.stoppingDistance) {
-            ChaseTarget ();
+            ChaseTarget();
         }
 
         if (distanceToTarget <= navMeshAgent.stoppingDistance) {
-            AttackTarget ();
+            AttackTarget();
         }
     }
 
-    private void ChaseTarget () {
-        navMeshAgent.SetDestination (target.position);
+    private void ChaseTarget() {
+        GetComponent<Animator>().SetBool("attack", false);
+        GetComponent<Animator>().SetTrigger("move");
+        navMeshAgent.SetDestination(target.position);
     }
 
-    private void AttackTarget () {
-        print ("GRAAAHHH");
+    private void AttackTarget() {
+        GetComponent<Animator>().SetBool("attack", true);
     }
 
-    void OnDrawGizmosSelected () {
+    void OnDrawGizmosSelected() {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere (transform.position, chaseRange);
+        Gizmos.DrawWireSphere(transform.position, chaseRange);
     }
 }
