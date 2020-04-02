@@ -6,10 +6,11 @@ public class EnemyHealth : MonoBehaviour {
 
     [SerializeField] float hitPoints = 100f;
 
-    public void TakeDamage (float damage) {
+    public void TakeDamage(float damage) {
+        BroadcastMessage("OnDamageTaken");
         hitPoints -= damage;
         if (hitPoints <= 0) {
-            Destroy (this.gameObject);
+            Destroy(this.gameObject);
         }
     }
 
