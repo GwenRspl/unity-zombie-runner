@@ -342,7 +342,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab4d64ab51fe92c4684ae5a732fae88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammoAmount: 10
+  ammoSlots:
+  - ammoType: 0
+    ammoAmount: 20
+  - ammoType: 2
+    ammoAmount: 10
+  - ammoType: 1
+    ammoAmount: 8
 --- !u!1 &1878138224405950259
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,6 +518,10 @@ PrefabInstance:
       propertyPath: timeBetweenShots
       value: 0.75
       objectReference: {fileID: 0}
+    - target: {fileID: 751635504, guid: 332636e1e5c9a254a80b3dc4286a8fbb, type: 3}
+      propertyPath: ammoType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1938405056989788, guid: 332636e1e5c9a254a80b3dc4286a8fbb, type: 3}
       propertyPath: m_Name
       value: ar15
@@ -676,6 +686,11 @@ PrefabInstance:
     - target: {fileID: 7497887271087670363, guid: d75e86718cff5a245ad7800afddf85ec,
         type: 3}
       propertyPath: timeBetweenShots
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7497887271087670363, guid: d75e86718cff5a245ad7800afddf85ec,
+        type: 3}
+      propertyPath: ammoType
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
