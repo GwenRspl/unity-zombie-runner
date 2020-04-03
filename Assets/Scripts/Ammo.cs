@@ -20,6 +20,10 @@ public class Ammo : MonoBehaviour {
         this.GetAmmoSlot(ammoType).ammoAmount--;
     }
 
+    public void IncreaseCurrentAmmo(AmmoType ammoType, int amount) {
+        this.GetAmmoSlot(ammoType).ammoAmount += amount;
+    }
+
     private AmmoSlot GetAmmoSlot(AmmoType ammoType) {
         foreach (AmmoSlot slot in this.ammoSlots) {
             if (slot.ammoType == ammoType) {
