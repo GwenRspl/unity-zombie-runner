@@ -10,40 +10,44 @@ public class Weapon : MonoBehaviour {
     [SerializeField] float damage = 30f;
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] GameObject hitEffect;
+    [SerializeField] Ammo ammoSlot;
 
-    void Update () {
+    void Update() {
 
-        if (Input.GetButtonDown ("Fire1")) {
-            Shoot ();
+        if (Input.GetButtonDown("Fire1")) {
+            Shoot();
         }
 
     }
 
-    private void Shoot () {
-        PlayMuzzleFlash ();
-        ProcessRaycast ();
+    private void Shoot() {
+        if (this.ammoSlot.GetCurrentAmmo() > 0) {
+            PlayMuzzleFlash();
+            ProcessRaycast();
+            this.ammoSlot.ReduceCurrentAmmo();
+        }
     }
 
-    private void PlayMuzzleFlash () {
-        this.muzzleFlash.Play ();
+    private void PlayMuzzleFlash() {
+        this.muzzleFlash.Play();
     }
 
-    private void ProcessRaycast () {
+    private void ProcessRaycast() {
         RaycastHit hit;
-        if (Physics.Raycast (this.FPCamera.transform.position, this.FPCamera.transform.forward, out hit, this.range)) {
-            Debug.Log ("I hit this thing: " + hit.transform.name);
-            CreateHitImpact (hit);
+        if (Physics.Raycast(this.FPCamera.transform.position, this.FPCamera.transform.forward, out hit, this.range)) {
+            Debug.Log("I hit this thing: " + hit.transform.name);
+            CreateHitImpact(hit);
 
-            EnemyHealth target = hit.transform.GetComponent<EnemyHealth> ();
+            EnemyHealth target = hit.transform.GetComponent<EnemyHealth>();
             if (target == null) return;
-            target.TakeDamage (damage);
+            target.TakeDamage(damage);
         } else {
             //return;
         }
     }
 
-    private void CreateHitImpact (RaycastHit hit) {
-        GameObject impact = Instantiate (this.hitEffect, hit.point, Quaternion.LookRotation (hit.normal));
-        Destroy (impact, .1f);
+    private void CreateHitImpact(RaycastHit hit) {
+        GameObject impact = Instantiate(this.hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+        Destroy(impact, .1f);
     }
 }
