@@ -46,7 +46,6 @@ public class Weapon : MonoBehaviour {
     private void ProcessRaycast() {
         RaycastHit hit;
         if (Physics.Raycast(this.FPCamera.transform.position, this.FPCamera.transform.forward, out hit, this.range)) {
-            Debug.Log("I hit this thing: " + hit.transform.name);
             CreateHitImpact(hit);
 
             EnemyHealth target = hit.transform.GetComponent<EnemyHealth>();
