@@ -13,53 +13,64 @@ public class EnemyAI : MonoBehaviour {
     float distanceToTarget = Mathf.Infinity;
     bool isProvoked = false;
 
+    EnemyHealth health;
+    CapsuleCollider collider;
+
     void Start() {
-        navMeshAgent = GetComponent<NavMeshAgent>();
+        this.navMeshAgent = GetComponent<NavMeshAgent>();
+        this.health = GetComponent<EnemyHealth>();
+        this.collider = GetComponent<CapsuleCollider>();
     }
 
     void Update() {
-        distanceToTarget = Vector3.Distance(target.position, transform.position);
+        if (health.IsDead()) {
+            this.enabled = false;
+            this.navMeshAgent.enabled = false;
+            this.collider.enabled = false;
+            return;
+        }
+        this.distanceToTarget = Vector3.Distance(target.position, transform.position);
 
-        if (isProvoked) {
+        if (this.isProvoked) {
             EngageTarget();
-        } else if (distanceToTarget <= chaseRange) {
-            isProvoked = true;
+        } else if (this.distanceToTarget <= this.chaseRange) {
+            this.isProvoked = true;
         }
     }
 
     public void OnDamageTaken() {
-        isProvoked = true;
+        this.isProvoked = true;
     }
 
     private void EngageTarget() {
         FaceTarget();
-        if (distanceToTarget > navMeshAgent.stoppingDistance) {
+        if (this.distanceToTarget > this.navMeshAgent.stoppingDistance) {
             ChaseTarget();
         }
 
-        if (distanceToTarget <= navMeshAgent.stoppingDistance) {
+        if (this.distanceToTarget <= this.navMeshAgent.stoppingDistance) {
             AttackTarget();
         }
     }
 
     private void ChaseTarget() {
-        GetComponent<Animator>().SetBool("attack", false);
-        GetComponent<Animator>().SetTrigger("move");
-        navMeshAgent.SetDestination(target.position);
+        this.GetComponent<Animator>().SetBool("attack", false);
+        this.GetComponent<Animator>().SetTrigger("move");
+        this.navMeshAgent.SetDestination(this.target.position);
     }
 
     private void AttackTarget() {
-        GetComponent<Animator>().SetBool("attack", true);
+        this.GetComponent<Animator>().SetBool("attack", true);
     }
 
     void OnDrawGizmosSelected() {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, chaseRange);
+        Gizmos.DrawWireSphere(this.transform.position, this.chaseRange);
     }
 
     private void FaceTarget() {
-        Vector3 direction = (target.position - transform.position).normalized;
+        Vector3 direction = (this.target.position - this.transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
+        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, lookRotation, Time.deltaTime * this.turnSpeed);
     }
 }
